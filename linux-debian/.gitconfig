@@ -1,0 +1,10 @@
+[user]
+	name = martin
+	email = martin_n_marinov@mail.bg
+[alias]
+	co = checkout
+	aa = add --all
+	s = status
+	b = branch --all
+	rmb = branch -d
+	rename = branch -m

@@ -1,0 +1,6 @@
+[submodule "submodules/mdcat"]
+	path = submodules/mdcat
+	url = https://github.com/lunaryorn/mdcat.git
+[submodule "submodules/zsh-syntax-highlighting"]
+	path = submodules/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git

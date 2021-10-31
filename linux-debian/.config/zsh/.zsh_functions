@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# load last directory location and cd into it :
+[ -f ~/.config/zsh/.bash_lastdir ] && [ -e "$(cat ~/.config/zsh/.bash_lastdir)" ] && lastdir=$(cat ~/.config/zsh/.bash_lastdir)
+
+## FUNCTIONS :
+
+# save pwd on change directory :
+function cd() {
+    lastdir=$(pwd)
+    builtin cd $@ && echo $(pwd) > ~/.config/zsh/.bash_lastdir && ls
+}
+
+function path_print() {
+    tmpPath=$PATH
+    buffer=$(echo $tmpPath | tr ":" "\n")
+
+    for i in "${buffer[@]}"
+    do
+        echo $i
+    done
+}
+
+function path_sorted() {
+    tmpPath=$(path_print)
+    echo "${tmpPath}" | sort
+}
+
+# smart cat:
+function cat() {
+	if [[ "$#" -eq 1 ]]; then
+		local lower=$(echo $1 | awk '{print tolower($1)}')
+		if [[ ( $lower == *.png ) || ( $lower == *.jpg ) || ( $lower == *.jpeg ) || ( $lower == *.bmp ) || ( $lower == *.svg ) ]]; then
+ 			command kitty +kitten icat "$@"
+			return
+		elif [[ ( $lower == *.md ) ]]; then
+			command mdcat "$@"
+			return
+		fi
+	fi
+
+    command cat "$@"
+}
+
+# git :
+function git() {
+    if [[ $1 == "log" ]]; then
+        command git log --graph --pretty=oneline --abbrev-commit --color=always
+    else
+        command git "$@"
+    fi
+}
+
+# Encrypt with 7z, with password :
+function 7z_with_pass() {
+    # $1 -> source folder
+    # $2 -> destination 7z file name
+    # $3 -> password
+    7z -mhc=on -mhe=on -p"$3" a $2 $1
+}
+
+# FZF functionality
+# load last directory location and cd into it :
+[ -f ~/.config/zsh/.fzf_functionality.zsh ] && source ~/.config/zsh/.fzf_functionality.zsh
