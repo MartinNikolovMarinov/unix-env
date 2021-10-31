@@ -14,7 +14,6 @@ function cd() {
 function path_print() {
     tmpPath=$PATH
     buffer=$(echo $tmpPath | tr ":" "\n")
-
     for i in "${buffer[@]}"
     do
         echo $i
@@ -44,7 +43,7 @@ function cat() {
 
 # git :
 function git() {
-    if [[ $1 == "log" ]]; then
+    if [[ ( $# == 1 ) && ( $1 == "log" ) ]]; then
         command git log --graph --pretty=oneline --abbrev-commit --color=always
     else
         command git "$@"
@@ -60,5 +59,4 @@ function 7z_with_pass() {
 }
 
 # FZF functionality
-# load last directory location and cd into it :
 [ -f ~/.config/zsh/.fzf_functionality.zsh ] && source ~/.config/zsh/.fzf_functionality.zsh

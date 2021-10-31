@@ -87,8 +87,9 @@ git_prompt_status() {
   fi
 }
 
+
 prompt_git_branch() {
-    autoload -Uz vcs_info
+    autoload -Uz vcs_info 
     precmd_vcs_info() { vcs_info }
     precmd_functions+=( precmd_vcs_info )
     setopt prompt_subst

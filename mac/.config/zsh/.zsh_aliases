@@ -1,0 +1,37 @@
+#!/bin/bash
+
+## ALIASES
+
+# htop specifics :
+alias htop_cpu="htop -s PERCENT_CPU"
+alias htop_io="htop -s IO_RATE"
+alias htop_mem="htop -s PERCENT_MEM"
+
+# other :
+alias py="python3"
+alias python="python3"
+alias pip="pip3"
+alias dir_size="du -sh"
+alias ll="ls -s -h"
+alias la="ls -la"
+alias grep="grep --color=auto"
+alias subl="setsid sublime_text"
+alias bat="bat --style=header,grid,numbers --color=always"
+alias less="less -RF"
+alias setclip="pbcopy"
+alias pasteclip="pbpaste"
+alias diff="kitty +kitten diff"
+alias icat="kitty +kitten icat"
+alias mdcat="mdcat"
+alias history="history 1"
+alias fzf="fzf -m"
+alias trim="sed 's/^[ \t]*//;s/[ \t]*$//'"
+alias k="kubecolor"
+alias dc="docker-compose"
+
+# MAC specific:
+alias op="open"
+alias get_ipv4="ip addr show en0 | grep -w inet | awk '{print \$2}' | cut -f1 -d'/' | head -n 1"
+alias ls='/usr/local/bin/gls --color -h --group-directories-first'
+alias updatedb="sudo /usr/libexec/locate.updatedb"
+alias explorer="open"

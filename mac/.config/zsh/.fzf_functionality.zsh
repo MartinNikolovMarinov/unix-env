@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# FZF functionallity:
-export FZF_DEFAULT_COMMAND="fdfind --hidden --color=never"
+# FZF functionality:
+export FZF_DEFAULT_COMMAND="fd --hidden --color=never"
 
-local _dirs=(~/.config ~/.docker ~/.kube ~/.ssh /bin ~/Downloads ~/notes ~/repos)
+local _dirs=(~/.config ~/.docker ~/.kube ~/.ssh ~/.vdp /bin ~/Downloads ~/notes ~/repos)
 local _tree_cache=""
 
 function __qupdate_cache() {
@@ -15,7 +15,7 @@ function __check_cache() {
 }
 
 function pfzf() {
-	fzf -m --preview-window=wrap --keep-right --preview 'batcat --style=numbers --color=always {}' $@
+	fzf -m --preview-window=wrap --keep-right --preview 'bat --style=numbers --color=always {}' $@
 }
 
 function qfzf() {
@@ -43,15 +43,16 @@ function qfzf_files() {
 }
 
 function qfzf_dirs() {
+
 	if [[ ("$1" == ".") && ("$2" == "-a") ]]; then
 		fd --no-ignore --hidden --type=directory | fzf -m
 		return
-	elif [[ "$1" == "." ]]; then
+	elif [[  "$1" == "." ]]; then
 		fd --type=directory | fzf -m
 		return
 	fi
 
-	fd --no-ignore --hidden --type=directory . ~ | fzf -m $@
+	fd --no-ignore --hidden --type=directory -E Library -E Pictures . ~ | fzf -m $@
 }
 
 function qcd() {
@@ -63,16 +64,23 @@ function qcd() {
 
 function qcat() {
 	local tmp=$(qfzf_files $@)
+  	if [[ -n $tmp ]]; then
+		cat $(echo $tmp | tr '\n' ' ')
+  	fi
+}
+
+function qrealpath() {
+	local tmp=$(qfzf_files $@)
 	if [[ -n $tmp ]]; then
-		cat $tmp
+		realpath $tmp
 	fi
 }
 
 function qbat() {
 	local tmp=$(qfzf_files $@)
-	if [[ -n $tmp ]]; then
-		bat $tmp
-	fi
+  	if [[ -n $tmp ]]; then
+		bat --paging=never $(echo $tmp | tr '\n' ' ')
+ 	fi
 }
 
 function qnano() {
@@ -93,7 +101,7 @@ function qcode() {
 	local tmp=$(qfzf $@)
 	if [[ -n $tmp ]]; then
 		code $tmp
-	fi
+ 	fi
 }
 
 function qhistory() {
@@ -101,15 +109,15 @@ function qhistory() {
 }
 
 function qdiff() {
-  local preview="git diff ${@:-HEAD} --color=always -- {-1}"
-  git diff ${@:-HEAD} --name-only | fzf -m --ansi --keep-right --preview-window="wrap" --preview $preview
+	local preview="git diff ${@:-HEAD} --color=always -- {-1}"
+	git diff ${@:-HEAD} --name-only | fzf -m --ansi --keep-right --preview-window="wrap" --preview $preview
 }
 
 function qnotes() {
-	local tmp=$(tree -ifF --noreport ~/notes)
-	tmp=$(echo $tmp | tail -n +2) 										# remove the first line which is the root diretory.
-	tmp=$(echo $tmp | awk 'NR==1{print "add new"}1') 					# add a noption for new note.
-	tmp=$(echo $tmp | fzf --preview-window=wrap --preview 'cat {}') 	# fzf with wrapping preview.
+	local tmp=$(tree -ifF --noreport ~/notes -I images)
+	tmp=$(echo $tmp | tail -n +2) 									# remove the first line which is the root diretory.
+	tmp=$(echo $tmp | awk 'NR==1{print "add new"}1')				# add a noption for new note.
+	tmp=$(echo $tmp | fzf --preview-window=wrap --preview 'cat {}')	# fzf with wrapping preview.
 
 	if [[ -z $tmp ]]; then
 		return
