@@ -11,7 +11,7 @@ function __qupdate_cache() {
 }
 
 function __check_cache() {
-    [ -z "$_tree_cache" ] && __qupdate_cache
+	[ -z "$_tree_cache" ] && __qupdate_cache
 }
 
 function pfzf() {
@@ -24,12 +24,11 @@ function qfzf() {
 		return
 	fi
 
-    __check_cache
+	__check_cache
 	echo $(echo $_tree_cache | pfzf $@)
 }
 
 function qfzf_files() {
-
 	if [[ ("$1" == ".") && ("$2" == "-a") ]]; then
 		fd --no-ignore --hidden --type=file | pfzf
 		return
@@ -43,7 +42,6 @@ function qfzf_files() {
 }
 
 function qfzf_dirs() {
-
 	if [[ ("$1" == ".") && ("$2" == "-a") ]]; then
 		fd --no-ignore --hidden --type=directory | fzf -m
 		return
@@ -62,13 +60,6 @@ function qcd() {
 	fi
 }
 
-function qcat() {
-	local tmp=$(qfzf_files $@)
-  	if [[ -n $tmp ]]; then
-		cat $(echo $tmp | tr '\n' ' ')
-  	fi
-}
-
 function qrealpath() {
 	local tmp=$(qfzf_files $@)
 	if [[ -n $tmp ]]; then
@@ -76,11 +67,18 @@ function qrealpath() {
 	fi
 }
 
+function qcat() {
+	local tmp=$(qfzf_files $@)
+	if [[ -n $tmp ]]; then
+		cat $(echo $tmp | tr '\n' ' ')
+	fi
+}
+
 function qbat() {
 	local tmp=$(qfzf_files $@)
-  	if [[ -n $tmp ]]; then
+	if [[ -n $tmp ]]; then
 		bat --paging=never $(echo $tmp | tr '\n' ' ')
- 	fi
+	fi
 }
 
 function qnano() {
@@ -101,11 +99,11 @@ function qcode() {
 	local tmp=$(qfzf $@)
 	if [[ -n $tmp ]]; then
 		code $tmp
- 	fi
+	fi
 }
 
 function qhistory() {
-	history | tail -r | fzf | awk '{$1=""; print $0}' | trim | setclip
+	history 1 | fzf +s --tac | awk '{$1=""; print $0}' | trim | setclip
 }
 
 function qdiff() {
@@ -114,21 +112,8 @@ function qdiff() {
 }
 
 function qnotes() {
-	local tmp=$(tree -ifF --noreport ~/notes -I images)
-	tmp=$(echo $tmp | tail -n +2) 									# remove the first line which is the root diretory.
-	tmp=$(echo $tmp | awk 'NR==1{print "add new"}1')				# add a noption for new note.
-	tmp=$(echo $tmp | fzf --preview-window=wrap --preview 'cat {}')	# fzf with wrapping preview.
-
-	if [[ -z $tmp ]]; then
-		return
-	fi
-
-	if [[ "$tmp" == "add new" ]]; then
-		local name=""
-		echo "Enter note name:"
-		read name
-		micro ~/notes/$name
-	else
+	local tmp=$(fd --type=file . ~/notes | fzf --preview-window=wrap --preview 'cat {}')
+	if [[ -n $tmp ]]; then
 		cat $tmp
 	fi
 }

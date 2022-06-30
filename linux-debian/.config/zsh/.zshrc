@@ -1,9 +1,10 @@
 # order matters !
 export ZSH_HOME=~/.config/zsh
 
-export PATH="$PATH:~/.cargo/bin"
-export PATH="$PATH:~/.local/bin"
-export PATH="$PATH:~/bin"
+export PATH="$PATH:$(realpath ~)/.cargo/bin"
+export PATH="$PATH:$(realpath ~)/.fzf/bin"
+export PATH="$PATH:$(realpath ~)/.local/bin"
+export PATH="$PATH:$(realpath ~)/bin"
 
 # Load auto completion.
 # autoload works like a lazy loader and loads copinit only when it is needed.
@@ -24,14 +25,6 @@ _comp_options+=(globdots) # With hidden files
 [ -f $ZSH_HOME/.promptinit.zsh ] && source $ZSH_HOME/.promptinit.zsh
 # Load syntax highlighting:
 [ -f $ZSH_HOME/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source $ZSH_HOME/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Load fzf (can't find much use for fzf auto-completion but this can turn it on):
-# Auto-completion
-# ---------------
-# [[ $- == *i* ]] && source "/usr/local/Cellar/fzf/0.27.2/shell/completion.zsh" 2> /dev/null
-# Key bindings
-# ------------
-# source "/usr/local/Cellar/fzf/0.27.2/shell/key-bindings.zsh"
 
 # Load different completion zsh scripts:
 [ -f $ZSH_HOME/.docker_completion.zsh ] && . $ZSH_HOME/.docker_completion.zsh
