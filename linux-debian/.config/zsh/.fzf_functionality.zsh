@@ -112,8 +112,9 @@ function qdiff() {
 	git diff ${@:-HEAD} --name-only | fzf -m --ansi --keep-right --preview-window="wrap" --preview $preview
 }
 
-function qnotes() {
-	local tmp=$(fd --type=file . ~/notes | fzf --preview-window=wrap --preview 'cat {}')
+function qnotes () {
+	local preview='batcat --style=numbers --color=always {}'
+	local tmp=$(fd --type=file . ~/notes | fzf -m --keep-right --preview-window="wrap" --preview $preview)
 	if [[ -n $tmp ]]; then
 		cat $tmp
 	fi
