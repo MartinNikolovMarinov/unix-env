@@ -28,11 +28,11 @@ function path_sorted() {
 # smart cat:
 function cat() {
 	if [[ "$#" -eq 1 ]]; then
-		local lower=$(echo $1 | awk '{print tolower($1)}')
-		if [[ ( $lower == *.png ) || ( $lower == *.jpg ) || ( $lower == *.jpeg ) || ( $lower == *.bmp ) || ( $lower == *.svg ) ]]; then
+		local extToLower=$(echo $1 | awk -F . '{if (NF>1) {print }}')
+		if [[ ( $extToLower == *.png ) || ( $extToLower == *.jpg ) || ( $extToLower == *.jpeg ) || ( $extToLower == *.bmp ) || ( $extToLower == *.svg ) ]]; then
 			command kitty +kitten icat "$@"
 			return
-		elif [[ ( $lower == *.md ) ]]; then
+		elif [[ ( $extToLower == *.md ) ]]; then
 			command mdcat "$@"
 			return
 		fi
