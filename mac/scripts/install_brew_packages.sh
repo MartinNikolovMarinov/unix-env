@@ -35,6 +35,15 @@ brew_packages_basic=(
     "bat"
     "micro"
     "fzf"
+    "coreutils"
+    "findutils"
+    "gnu-tar"
+    "gnu-sed"
+    "gawk"
+    "gnutls"
+    "gnu-indent"
+    "gnu-getopt"
+    "grep"
 )
 brew_casks=( 
     "kitty"
