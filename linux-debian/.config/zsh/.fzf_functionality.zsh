@@ -3,16 +3,7 @@
 # FZF functionality:
 export FZF_DEFAULT_COMMAND="fdfind --hidden --color=never"
 
-local _dirs=(~/.config ~/.docker ~/.kube ~/.ssh /bin ~/Downloads ~/notes ~/repos)
-local _tree_cache=""
-
-function __qupdate_cache() {
-	_tree_cache=$(tree -aifFU --noreport ${_dirs[@]})
-}
-
-function __check_cache() {
-	[ -z "$_tree_cache" ] && __qupdate_cache
-}
+local _dirs=(~/.config/zsh ~/.config/kitty ~/.config/micro)
 
 function pfzf() {
 	fzf -m --preview-window=wrap --keep-right --preview 'batcat --style=numbers --color=always {}' $@
@@ -24,12 +15,10 @@ function qfzf() {
 		return
 	fi
 
-	__check_cache
-	echo $(echo $_tree_cache | pfzf $@)
+	echo $(tree -aifFU --noreport ${_dirs[@]} | pfzf $@)
 }
 
 function qfzf_files() {
-
 	if [[ ("$1" == ".") && ("$2" == "-a") ]]; then
 		fd --no-ignore --hidden --type=file | pfzf
 		return
@@ -38,8 +27,7 @@ function qfzf_files() {
 		return
 	fi
 
-	__check_cache
-	echo $(echo $_tree_cache | grep -v -E '/$' | pfzf $@)
+	echo $(tree -aifFU --noreport ${_dirs[@]} | grep -v -E '/$' | pfzf $@)
 }
 
 function qfzf_dirs() {
