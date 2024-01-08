@@ -50,6 +50,54 @@ function git() {
 	fi
 }
 
+function check_exit_code() {
+    if [ $? -ne 0 ]; then
+        echo "[FAILED]"
+        exit 1
+    fi
+}
+
+function remove_git_submodule() {
+    if [ $# -ne 1 ]; then
+        echo "Usage: remove_git_submodule.sh <submodule_path>"
+        exit 1
+    fi
+
+    # Check if the .gitmodules file exists
+    if [ ! -f .gitmodules ]; then
+        echo "No .gitmodules file found"
+        exit 1
+    fi
+
+    # Remove from .gitmodules
+    git config -f .gitmodules --remove-section submodule.$1
+    check_exit_code
+
+    # Stage the .gitmodules changes
+    git add .gitmodules
+    check_exit_code
+
+    # Remove from .git/config
+    git config -f .git/config --remove-section submodule.$1
+    check_exit_code
+
+    # Remove the submodule files from the working tree and index
+    git rm --cached $1
+    check_exit_code
+
+    # Remove the submodule's .git directory
+    rm -rf ./git/modules/$1
+    check_exit_code
+
+    # Commit the changes
+    git commit -m "Removed submodule $1"
+    check_exit_code
+
+    # Delete the now untracked submodule files
+    rm -rf $1
+    check_exit_code
+}
+
 # Compress and encrypt with password using zip:
 function zip_with_pass() {
 	# $1 -> destination zip file
