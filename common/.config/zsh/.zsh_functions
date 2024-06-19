@@ -33,7 +33,7 @@ function cat() {
 			command kitty +kitten icat "$@"
 			return
 		elif [[ ( $extToLower == *.md ) ]]; then
-			command mdcat "$@"
+			bat "$@"
 			return
 		fi
 	fi
@@ -103,6 +103,25 @@ function zip_with_pass() {
 	# $1 -> destination zip file
 	# $2 -> source folder
 	zip -re $2 $1
+}
+
+# Generate random data
+function generate_random_data() {
+	if [ -z "$1" ]; then
+        echo "Error: Size in MB must be specified"
+        return 1
+    fi
+    
+    local size_mb=$1
+    local size_bytes=$((size_mb * 1024 * 1024))
+
+    if (( size_bytes < 64 * 1024 * 1024 )); then
+        # For sizes less than 64MB, use a smaller block size
+        dd if=/dev/urandom bs=1M count=$((size_bytes / (1024 * 1024))) | base64 | tr -dc 'a-zA-Z' | head -c "$size_bytes"
+    else
+        # For sizes 64MB and larger
+        dd if=/dev/urandom bs=64M count=$((size_bytes / (64 * 1024 * 1024))) | base64 | tr -dc 'a-zA-Z' | head -c "$size_bytes"
+    fi
 }
 
 # Note management:
