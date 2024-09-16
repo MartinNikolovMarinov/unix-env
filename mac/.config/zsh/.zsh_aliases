@@ -28,6 +28,7 @@ alias fzf="fzf -m"
 alias trim="sed 's/^[ \t]*//;s/[ \t]*$//'"
 alias k="kubecolor"
 alias dc="docker-compose"
+alias filter_unique="awk !seen[$0]++ {print}"
 
 # MAC specific:
 alias op="open"
