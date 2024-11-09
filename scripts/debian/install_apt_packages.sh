@@ -13,8 +13,10 @@ function install_apt_pkg() {
     return 0
 }
 
-log_info "Packages that will be installed"
-apt_packages_basic_dev_deps=(
+sudo update
+sudo apt-get install dialog # Will need this for the next step
+
+available_packages=(
     "net-tools"                     # needed for ifconfig
     "tree"
     "htop"
@@ -31,35 +33,25 @@ apt_packages_basic_dev_deps=(
     "bat"
     "micro"
     "fzf"
-)
-apt_packages_x_server_deps=(
-    "xdg-utils"     # needed for xdg-open
-)
-apt_packages_latex=(
+    "xdg-utils"
+
     "texlive-full"
     "texlive-xetex"
     "latexmk"
     "biber"
     "entr"
 )
-log_info "apt_packages_basic_dev_deps:\n\t${apt_packages_basic_dev_deps[@]}"
-log_info "apt_packages_x_server_deps:\n\t${apt_packages_x_server_deps[@]}"
-log_info "apt_packages_latex:\n\t${apt_packages_latex[@]}"
+
+selected_packages=()
+prompt_user_for_packages "Select packages to install:" available_packages selected_packages
+log_info "Selected packages: ${selected_packages[@]}"
 
 echo -n "Start install"
 prompt_user_yes_no
 
-for pkg in "${apt_packages_basic_dev_deps[@]}"
+for pkg in "${selected_packages[@]}"
 do
-	install_apt_pkg $pkg
-done
-for pkg in "${apt_packages_x_server_deps[@]}"
-do
-	install_apt_pkg $pkg
-done
-for pkg in "${apt_packages_latex[@]}"
-do
-	install_apt_pkg $pkg
+    install_apt_pkg $pkg
 done
 
 which pip

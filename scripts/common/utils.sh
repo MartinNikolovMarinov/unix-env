@@ -82,3 +82,44 @@ function prompt_user_choice {
         fi
     done
 }
+
+function prompt_user_for_packages {
+    local title="$1"
+    local -n packages="$2"  # Use nameref to reference the passed array
+    local -n selected="$3"  # Use nameref for the out parameter
+    local temp_file=$(mktemp)
+
+    # Construct the options dynamically
+    local dialog_options=()
+    local index=1
+    for package in "${packages[@]}"; do
+        dialog_options+=("$index" "$package" "on") # Add index, description, and initial state
+        ((index++))
+    done
+
+    # Show the dialog
+    dialog --backtitle "Dialog Checklist Picker" \
+           --checklist "$title" 20 80 15 \
+           "${dialog_options[@]}" 2> "$temp_file"
+
+    # If dialog was canceled, clean up and return
+    if [[ $? -ne 0 ]]; then
+        rm -f "$temp_file"
+        echo "Dialog canceled or no selection made."
+        return 1
+    fi
+
+    clear
+
+    # Read selected indices from the temp file
+    local selected_indices=($(<"$temp_file"))
+    rm -f "$temp_file"
+
+    # Convert indices back to package names
+    selected=()
+    for index in "${selected_indices[@]}"; do
+        selected+=("${packages[$((index - 1))]}")
+    done
+
+    return 0
+}
