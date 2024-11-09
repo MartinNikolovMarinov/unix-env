@@ -26,6 +26,7 @@ available_packages=(
     "build-essential"
     "bat"
     "python3"
+    "python3-pip"
     "cargo"
     "locate"
     "apt-transport-https"
@@ -53,13 +54,6 @@ for pkg in "${selected_packages[@]}"
 do
     install_apt_pkg $pkg
 done
-
-which pip
-resp_code=$(echo $?)
-if [[ $resp_code != 0 ]]; then
-    log_info "Installing python pip"
-    python3 -m pip install pip
-fi
 
 dpkg-query -l fonts-firacode > /dev/null
 resp_code=$(echo $?)

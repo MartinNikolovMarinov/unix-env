@@ -2,8 +2,8 @@
 
 source $BASE_DIR/scripts/common/setup_env.sh
 
-copy_or_append_folder $BASE_DIR/fs/linux/.config ~
-copy_or_append_folder $BASE_DIR/fs/debian/.config ~
+copy_or_append_folder fs/linux/.config ~
+copy_or_append_folder fs/debian/.config ~
 
 log_info "Setting kitty as default terminal emulator"
 sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty

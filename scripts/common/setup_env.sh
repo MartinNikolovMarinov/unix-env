@@ -5,6 +5,7 @@ echo -n "Start setting up environment"
 prompt_user_yes_no
 
 cp     $BASE_DIR/fs/common/.gitconfig ~/.gitconfig
+cp     $BASE_DIR/fs/common/.zshenv ~/.zshenv
 cp -rf $BASE_DIR/fs/common/.config/* ~/.config
 
 mkdir -p ~/notes
