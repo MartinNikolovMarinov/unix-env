@@ -1,10 +1,10 @@
 # order matters !
 export ZSH_HOME=~/.config/zsh
 
-export PATH="$PATH:$(realpath ~)/.cargo/bin"
-export PATH="$PATH:$(realpath ~)/.fzf/bin"
-export PATH="$PATH:$(realpath ~)/.local/bin"
-export PATH="$PATH:$(realpath ~)/bin"
+export PATH="$PATH:/Users/mamarinov/bin"
+export PATH="$PATH:/usr/local/opt/util-linux/bin"
+export PATH="$PATH:/Applications/Sublime Text.app/Contents/MacOS"
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # Load auto completion.
 # autoload works like a lazy loader and loads copinit only when it is needed.
@@ -12,9 +12,9 @@ export PATH="$PATH:$(realpath ~)/bin"
 autoload -Uz compinit; compinit -i
 
 # load bash aliases :
-[ -f $ZSH_HOME/.zsh_aliases ] && source $ZSH_HOME/.zsh_aliases
+[ -f $ZSH_HOME/.zsh_aliases.sh ] && source $ZSH_HOME/.zsh_aliases.sh
 # load bash functions :
-[ -f $ZSH_HOME/.zsh_functions ] && . $ZSH_HOME/.zsh_functions
+[ -f $ZSH_HOME/.zsh_functions.sh ] && . $ZSH_HOME/.zsh_functions.sh
 
 # Auto complete dot files:
 _comp_options+=(globdots) # With hidden files
@@ -26,12 +26,27 @@ _comp_options+=(globdots) # With hidden files
 # Load syntax highlighting:
 [ -f $ZSH_HOME/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source $ZSH_HOME/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Load fzf (can't find much use for fzf auto-completion but this can turn it on):
+# Auto-completion
+# ---------------
+# [[ $- == *i* ]] && source "/usr/local/Cellar/fzf/0.27.2/shell/completion.zsh" 2> /dev/null
+# Key bindings
+# ------------
+# source "/usr/local/Cellar/fzf/0.27.2/shell/key-bindings.zsh"
+
 # Load different completion zsh scripts:
 [ -f $ZSH_HOME/.docker_completion.zsh ] && . $ZSH_HOME/.docker_completion.zsh
+# [ -x "$(command -v kubectl)" ] && source <(kubectl completion zsh)
 
 # Bind Ctrl + left/right to move left and right
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;9D" beginning-of-line
+bindkey "^[[1;9C" end-of-line
+
+# Setup zsh history options
+setopt share_history		# Allows multiple shell sessions to write to the same zsh history file and appends commands immediately before execution.
+setopt histignorealldups	# Do not save duplicate commands in the zsh history file
 
 # Setup Directory stack:
 setopt AUTO_PUSHD           # Push the current directory visited on the stack.

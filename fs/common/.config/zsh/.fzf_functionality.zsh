@@ -107,15 +107,3 @@ function qnotes () {
 		cat $tmp
 	fi
 }
-
-function qssh() {
-	local host=$(cat ~/.ssh/known_hosts | awk '{print $1}' | tr "," " " | fzf | awk '{print $1}')
-	if [[ -z $host ]]; then
-		return
-	fi
-
-	echo ssh $host $@
-	if [[ "$host" != "" ]]; then
-		ssh $host $@
-	fi
-}

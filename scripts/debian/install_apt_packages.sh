@@ -69,15 +69,6 @@ if [[ $resp_code != 0 ]]; then
     python3 -m pip install pip
 fi
 
-which mdcat
-resp_code=$(echo $?)
-if [[ $resp_code != 0 ]]; then
-    log_info "Installing mdcat"
-    pushd $BASE_DIR/linux-debian/submodules/mdcat
-    cargo install mdcat
-    popd
-fi
-
 dpkg-query -l fonts-firacode > /dev/null
 resp_code=$(echo $?)
 if [[ $resp_code != 0 ]]; then
