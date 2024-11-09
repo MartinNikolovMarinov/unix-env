@@ -27,27 +27,31 @@ function write_or_append_to_file() {
     fi
 }
 
-function copy_or_append_files {
+function copy_or_append_folder() {
     local src_dir="$1"
     local dest_dir="$2"
+
+    if [[ ! -d "$src_dir" ]]; then
+        echo "Error: $src_dir is not a valid directory."
+        return 1
+    fi
 
     # Ensure the destination directory exists
     mkdir -p "$dest_dir"
 
-    for src_file in "$src_dir"/*; do
-        local dest_file="$dest_dir/$(basename "$src_file")"
-
-        if [[ -d "$src_file" ]]; then
-            echo "Processing directory $src_file -> $dest_file"
-            copy_or_append_files "$src_file" "$dest_file"  # Recurse into subdirectory
-        else
-            echo "Processing file $src_file -> $dest_file"
-            write_or_append_to_file "$dest_file" "$(cat "$src_file")"
+    find "$src_dir" -print0 | while IFS= read -r -d '' item; do
+        local dest_item="$dest_dir/$item"
+        if [[ -d "$item" ]]; then
+            echo "Creating Directory: $item -> $dest_item"
+            mkdir -p "$dest_item"
+        elif [[ -f "$item" ]]; then
+            echo "Creating File: $item -> $dest_item"
+            write_or_append_to_file "$dest_item" "$(cat $item)"
         fi
     done
 }
 
-function prompt_user_yes_no {
+function prompt_user_yes_no() {
     while true; do
         read -p "$* [y/n]: " yn
         case $yn in
@@ -57,7 +61,7 @@ function prompt_user_yes_no {
     done
 }
 
-function prompt_user_choice {
+function prompt_user_choice() {
     local choice
     local i=1
     local title="$1"
@@ -83,7 +87,7 @@ function prompt_user_choice {
     done
 }
 
-function prompt_user_for_packages {
+function prompt_user_for_packages() {
     local title="$1"
     local -n packages="$2"  # Use nameref to reference the passed array
     local -n selected="$3"  # Use nameref for the out parameter

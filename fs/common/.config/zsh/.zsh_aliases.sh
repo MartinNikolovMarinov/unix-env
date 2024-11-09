@@ -25,5 +25,3 @@ alias diff="kitty +kitten diff"
 alias icat="kitty +kitten icat"
 alias fzf="fzf -m"
 alias trim="sed 's/^[ \t]*//;s/[ \t]*$//'"
-
-
