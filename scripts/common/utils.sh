@@ -27,7 +27,7 @@ function write_or_append_to_file() {
     fi
 }
 
-function copy_or_append_folder() {
+function sync_fs_tree() {
     local src_dir="$1"
     local dest_dir="$2"
 
@@ -45,7 +45,7 @@ function copy_or_append_folder() {
             echo "Creating Directory: $item -> $dest_item"
             mkdir -p "$dest_item"
         elif [[ -f "$item" ]]; then
-            echo "Creating File: $item -> $dest_item"
+            echo "Creating File: $item -> $dest_tem"
             write_or_append_to_file "$dest_item" "$(cat $item)"
         fi
     done
