@@ -1,14 +1,18 @@
 #!/bin/bash
 
 sudo pacman -S sddm sway wayland wlroots xorg-xwayland \
-    xdg-desktop-portal-wlr swaybg wofi alacritty \
+    xdg-desktop-portal-wlr swaybg wofi \
     grim slurp wl-clipboard brightnessctl \
     pipewire pipewire-pulse wireplumber pavucontrol \
     noto-fonts noto-fonts-emoji noto-fonts-cjk
 
 mkdir -p ~/.config/sway
 
-# TODO: remove the default coniguration an replace it with my configuration:
+# TODO: Fix the sway config?
+# Copy the sway specific configurations
+# pushd $BASE_DIR/fs/sway
+#     sync_fs_tree .config ~
+# popd
 cp /etc/sway/config ~/.config/sway/
 
 # Append to zsh env

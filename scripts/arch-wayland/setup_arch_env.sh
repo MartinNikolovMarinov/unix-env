@@ -6,10 +6,6 @@ pushd $BASE_DIR/fs/linux
     sync_fs_tree .config ~
 popd
 
-pushd $BASE_DIR/fs/arch
-    sync_fs_tree .config ~
-popd
-
 log_info "Setting zsh as default shell"
 chsh -s $(which zsh)
 
