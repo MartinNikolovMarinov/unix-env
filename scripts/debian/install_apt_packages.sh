@@ -48,7 +48,7 @@ prompt_user_for_packages "Select packages to install:" available_packages select
 log_info "Selected packages: ${selected_packages[@]}"
 
 echo -n "Start install"
-prompt_user_yes_no
+prompt_user_to_continue
 
 for pkg in "${selected_packages[@]}"
 do

@@ -51,7 +51,7 @@ function sync_fs_tree() {
     done
 }
 
-function prompt_user_yes_no() {
+function prompt_user_to_continue() {
     while true; do
         read -p "$* [y/n]: " yn
         case $yn in
@@ -60,6 +60,27 @@ function prompt_user_yes_no() {
         esac
     done
 }
+
+function prompt_user_confirm() {
+    dialog --title "Confirmation" --yesno "$1" 7 40
+    response=$?
+
+    clear
+
+    case $response in
+        0)
+            return 0  # Yes
+            ;;
+        1)
+            return 1  # No
+            ;;
+        *)
+            return 2  # Cancel/Close
+            ;;
+    esac
+}
+
+############################## Dialog Widgets ##############################
 
 function prompt_user_choice() {
     local choice
@@ -126,4 +147,46 @@ function prompt_user_for_packages() {
     done
 
     return 0
+}
+
+function  prompt_user_radio_select() {
+    local prompt="$1"                   # First argument: the prompt message
+    local -n result_var=$2              # Second argument: variable to store the selected index (passed by name)
+    local -n options=$3                 # Third argument: array of options (passed by name)
+
+    local dialog_options=()
+    for i in "${!options[@]}"; do
+        if [ "$i" -eq 0 ]; then
+            dialog_options+=("$i" "${options[$i]}" "ON")  # First option selected by default
+        else
+            dialog_options+=("$i" "${options[$i]}" "OFF")
+        fi
+    done
+
+    # Create a temporary file to capture the result
+    local temp_file
+    temp_file=$(mktemp)
+
+    dialog --title "Selection" --radiolist "$prompt" 15 50 10 "${dialog_options[@]}" 2>"$temp_file"
+    local status=$? # result from dialog
+
+    clear
+
+    if [ $status -eq 0 ]; then
+        # Read the selected index from the temporary file
+        if [ -s "$temp_file" ]; then
+            result_var=$(<"$temp_file")
+        else
+            # Fail if no option is selected (should not happen because of default selection)
+            result_var=-1
+            status=1
+        fi
+    else
+        result_var=-1  # Indicate cancellation
+    fi
+
+    # Cleanup
+    rm -f "$temp_file"
+
+    return $status
 }

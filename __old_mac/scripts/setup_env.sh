@@ -2,7 +2,7 @@
 
 echo
 echo -n "Start setting up environment"
-prompt_user_yes_no
+prompt_user_to_continue
 
 cp -rf $BASE_DIR/common/.gitconfig ~/.gitconfig
 cp -rf $BASE_DIR/common/.config/* ~/.config

@@ -45,7 +45,7 @@ brew_packages_basic=(
     "gnu-getopt"
     "grep"
 )
-brew_casks=( 
+brew_casks=(
     "kitty"
 )
 
@@ -53,7 +53,7 @@ log_info "brew_packages_basic:\n\t${brew_packages_basic[@]}"
 log_info "brew_casks:\n\t${brew_casks[@]}"
 
 echo -n "Start install"
-prompt_user_yes_no
+prompt_user_to_continue
 
 for pkg in "${brew_packages_basic[@]}"
 do
