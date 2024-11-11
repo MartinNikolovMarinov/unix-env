@@ -8,7 +8,7 @@ sudo pacman -S sddm sway wayland wlroots xorg-xwayland \
 
 mkdir -p ~/.config/sway
 
-Copy the sway specific configurations
+echo Copy the sway specific configurations
 pushd $BASE_DIR/fs/sway
     sync_fs_tree .config ~
 popd

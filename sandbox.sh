@@ -37,7 +37,10 @@ function sync_fs_tree() {
     done
 }
 
+pushd "./fs/common"
+sync_fs_tree .config ../../fs2
+popd
 
 pushd "./fs/sway"
-sync_fs_tree ".config" "../../fs2"
+sync_fs_tree .config ../../fs2
 popd

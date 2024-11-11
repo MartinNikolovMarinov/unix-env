@@ -47,13 +47,14 @@ selected_packages=()
 prompt_user_for_packages "Select packages to install:" available_packages selected_packages
 log_info "Selected packages: ${selected_packages[@]}"
 
-echo -n "Start install"
-prompt_user_to_continue
-
-for pkg in "${selected_packages[@]}"
-do
-    install_apt_pkg $pkg
-done
+if prompt_user_confirm "Install packages one-by-one?"; then
+    for pkg in "${selected_packages[@]}"
+    do
+        install_apt_pkg $pkg
+    done
+else
+    sudo apt-get install "${selected_packages[@]}" || echo "Error: Installation failed for some packages" >&2
+fi
 
 dpkg-query -l fonts-firacode > /dev/null
 resp_code=$(echo $?)

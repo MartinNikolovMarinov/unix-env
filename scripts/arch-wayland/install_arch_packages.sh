@@ -39,13 +39,14 @@ selected_packages=()
 prompt_user_for_packages "Select packages to install:" available_packages selected_packages
 log_info "Selected packages: ${selected_packages[@]}"
 
-echo -n "Start install"
-prompt_user_to_continue
-
-for pkg in "${selected_packages[@]}"
-do
-    install_arch_pkg $pkg
-done
+if prompt_user_confirm "Install packages one-by-one?"; then
+    for pkg in "${selected_packages[@]}"
+    do
+        install_arch_pkg $pkg
+    done
+else
+    sudo pacman -S "${selected_packages[@]}" || echo "Error: Installation failed for some packages" >&2
+fi
 
 # Install YaY
 if prompt_user_confirm "Do you want to install yay from source?"; then
