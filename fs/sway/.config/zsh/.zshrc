@@ -1,4 +1,4 @@
-
+# Sway ZSHRC
 export LIBVA_DRIVER_NAME=nvidia
 export XDG_SESSION_TYPE=wayland
 export GBM_BACKEND=nvidia-drm

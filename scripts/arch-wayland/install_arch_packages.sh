@@ -62,9 +62,9 @@ fi
 available_desktop_environments=(
     "sway"
 )
-selected_desktop_environment=0
-prompt_user_radio_select "Select a desktop environment:" selected_desktop_environment available_desktop_environments
-case $selected_desktop_environment in
+export SELECTED_DESKTOP_ENVIRONMENT=0
+prompt_user_radio_select "Select a desktop environment:" SELECTED_DESKTOP_ENVIRONMENT available_desktop_environments
+case $SELECTED_DESKTOP_ENVIRONMENT in
     0)
         # Sway
         source $BASE_DIR/scripts/arch-wayland/install_sway.sh
