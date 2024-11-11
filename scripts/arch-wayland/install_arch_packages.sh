@@ -18,6 +18,9 @@ sudo pacman -S dialog # Will need this for the next step
 
 # Install packages
 available_packages=(
+    "pipewire"
+    "pipewire-jack"
+    "pipewire-pulse"
     "base-devel"
     "less"
     "tree"
@@ -28,6 +31,8 @@ available_packages=(
     "curl"
     "xdg-utils"
     "networkmanager"
+    "kitty"
+    "firefox"
 )
 
 selected_packages=()

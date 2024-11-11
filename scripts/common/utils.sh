@@ -45,7 +45,7 @@ function sync_fs_tree() {
             echo "Creating Directory: $item -> $dest_item"
             mkdir -p "$dest_item"
         elif [[ -f "$item" ]]; then
-            echo "Creating File: $item -> $dest_tem"
+            echo "Syncing File: $item -> $dest_item"
             write_or_append_to_file "$dest_item" "$(cat $item)"
         fi
     done
