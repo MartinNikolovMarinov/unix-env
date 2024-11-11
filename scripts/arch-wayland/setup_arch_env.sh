@@ -13,6 +13,10 @@ case $SELECTED_DESKTOP_ENVIRONMENT in
             sync_fs_tree .config ~
         popd
         ;;
+    1)
+        echo Copy the kde specific configurations
+        echo "exec startplasma-wayland" >> ~/.xinitrc
+        ;;
 esac
 
 log_info "Setting zsh as default shell"
