@@ -20,5 +20,8 @@ case $WMGR in
         # X11
         log_err "X11 not supported  yet. Probably never will."
         ;;
+    *)
+        log_err "No selected desktop environment"
+        ;;
 esac
 

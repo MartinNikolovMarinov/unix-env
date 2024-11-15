@@ -23,6 +23,7 @@ available_packages=(
     "pipewire-jack"
     "pipewire-pulse"
     "base-devel"
+    "linux-headers"
     "less"
     "tree"
     "htop"
@@ -34,6 +35,9 @@ available_packages=(
     "networkmanager"
     "kitty"
     "firefox"
+    "nvidia"
+    "nvidia-utils"
+    "nvidia-settings"
 )
 
 selected_packages=()
@@ -63,6 +67,7 @@ fi
 available_desktop_environments=(
     "sway"
     "kde"
+    "gnome"
 )
 export SELECTED_DESKTOP_ENVIRONMENT=1
 prompt_user_radio_select "Select a desktop environment:" SELECTED_DESKTOP_ENVIRONMENT available_desktop_environments
@@ -74,6 +79,10 @@ case $SELECTED_DESKTOP_ENVIRONMENT in
     1)
         # Kde
         source $BASE_DIR/scripts/arch-wayland/install_kde.sh
+        ;;
+    2)
+        # Gnome
+        source $BASE_DIR/scripts/arch-wayland/install_gnome.sh
         ;;
     *)
         log_info "No desktop environment selected"
