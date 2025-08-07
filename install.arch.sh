@@ -1,5 +1,11 @@
 #!/bin/bash
 
+read -r -p "Are you sure you want to start the installation process for \"arch\" [y/N] " response
+case "$response" in
+    [yY][eE][sS]|[yY]) ;;
+    *) echo "Aborted."; exit 1 ;;
+esac
+
 export BASE_DIR=$(echo "$PWD")
 export TARGET_UNIX="linux-arch"
 
