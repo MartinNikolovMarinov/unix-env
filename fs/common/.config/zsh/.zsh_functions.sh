@@ -98,11 +98,20 @@ function remove_git_submodule() {
     check_exit_code
 }
 
-# Compress and encrypt with password using zip:
-function zip_with_pass() {
-    # $1 -> destination zip file
-    # $2 -> source folder
-    zip -re $2 $1
+# Encrypt and compress with password using 7z:
+function encrypt_with_pass_7z() {
+    # $1 -> source folder/file
+    # $2 -> destination 7z file
+    7z a -mhe=on -p "$2" "$1"
+    # prompts for password
+}
+
+# Decrypt and decompress with 7z:
+function decrypt_7z() {
+    # $1 -> source 7z file
+    # $2 -> destination folder
+    7z x "$1" -o"$2"
+    # prompts for password
 }
 
 # Generate random data
