@@ -1,6 +1,6 @@
 # Description
 
-This step-by-step guide shows how to install Windows 11 and Arch Linux Minimal in a Dual Boot configuration, with encryption using both BitLocker and LuksFormat for linux. This configuration encrypts the swap partition as well. This guide should work for installation on the actual hardware.
+This step-by-step guide shows how to install Windows 11 and Arch Linux Minimal in a Dual Boot configuration, with encryption using both BitLocker and LuksFormat for linux. This configuration encrypts the swap partition as well.
 
 # Table of Contents
 
@@ -109,7 +109,7 @@ Create two virtual hard disks:
     Proceed with Windows 11 installation:
         Follow the on-screen instructions.
         Select Custom Installation when prompted.
-        Select the WindowsDisk.vdi disk (usually shown as Drive 0). Should be of size 70 (or whater you set it to).
+        Select the WindowsDisk.vdi disk (usually shown as Drive 0). Should be of size 70 (or whatever you set it to).
         Install Windows 11 on this disk.
         Turn off internet to force Windows 11 to create a local account and not require windows online account. This needs to happen at a specific time, check the internet for articles on how to do this exactly.
 
@@ -380,9 +380,17 @@ nano /etc/hosts
 
 Add the following lines:
 
+```bash
 127.0.0.1   localhost
 ::1         localhost
 127.0.1.1   tester.localdomain   tester
+```
+
+Explanation:
+
+* 127.0.0.1 and ::1 are standard loopback entries.
+* 127.0.1.1 maps your chosen hostname → this is important so local services resolve it properly.
+* You can replace localdomain with your actual local domain if you have one, but localdomain is a safe default.
 
 ## Step 11: Configure Initramfs for Encryption
 ### 11.1. Edit /etc/mkinitcpio.conf
@@ -390,9 +398,9 @@ Add the following lines:
 ```bash
 nano /etc/mkinitcpio.conf
 ```
-Modify the HOOKS line to include encrypt:
+Modify the HOOKS line to include `encrypt` and `resume`:
 
-HOOKS=(... block ...)
+HOOKS=(...other block... encrypt resume)
 
 Place encrypt after block.
 
