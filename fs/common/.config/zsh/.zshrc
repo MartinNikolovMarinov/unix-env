@@ -32,10 +32,8 @@ _comp_options+=(globdots) # With hidden files
 # Bind Ctrl + left/right to move left and right
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
-
-# Setup Directory stack:
-setopt AUTO_PUSHD           # Push the current directory visited on the stack.
-setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
-setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
-alias d='dirs -v'
-for index ({1..9}) alias "$index"="cd +${index}"; unset index
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^[[3~" delete-char
+bindkey "^[[3;5~" kill-word
+bindkey "^H" backward-kill-word

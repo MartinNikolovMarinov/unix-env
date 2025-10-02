@@ -18,12 +18,16 @@ sudo pacman -S dialog # Will need this for the next step
 
 # Install packages
 available_packages=(
+    "wl-clipboard"
     "pipewire"
     "pipewire-alsa"
     "pipewire-jack"
     "pipewire-pulse"
     "base-devel"
     "linux-headers"
+    "libsecret"
+    "fd"
+    "fzf"
     "less"
     "tree"
     "htop"
@@ -32,6 +36,7 @@ available_packages=(
     "wget"
     "curl"
     "xdg-utils"
+    "ttf-fira-code"
     "networkmanager"
     "kitty"
     "firefox"
