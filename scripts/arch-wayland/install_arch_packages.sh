@@ -19,13 +19,14 @@ sudo pacman -S dialog # Will need this for the next step
 # Install packages
 available_packages=(
     "wl-clipboard"
+    "pacman-contrib"
+    "base-devel"
+    "linux-headers"
+    "libsecret"
     "pipewire"
     "pipewire-alsa"
     "pipewire-jack"
     "pipewire-pulse"
-    "base-devel"
-    "linux-headers"
-    "libsecret"
     "fd"
     "fzf"
     "less"
