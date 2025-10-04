@@ -5,10 +5,10 @@ Set the root password:
 passwd
 ```
 
-Create a new user:
+Create a new user (replace `<USERNAME>` with the account name you intend to use):
 ```bash
-useradd -mG wheel,audio,video good-mood14
-passwd good-mood14
+useradd -mG wheel,audio,video <USERNAME>
+passwd <USERNAME>
 ```
 
 Configure sudoers by editing `/etc/sudoers` uncomment the following line:
