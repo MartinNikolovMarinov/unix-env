@@ -38,6 +38,7 @@ available_packages=(
     "curl"
     "xdg-utils"
     "ttf-fira-code"
+    "noto-fonts-emoji"
     "networkmanager"
     "kitty"
     "firefox"
