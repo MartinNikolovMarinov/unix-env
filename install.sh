@@ -19,9 +19,6 @@ fi
 
 prompt_user_to_continue "Are you sure you want to start the installation script from '${BASE_DIR}'?"
 
-git submodule init
-git submodule update
-
 # Example usage:
 if [[ "$package_manager" == "pacman" ]]; then
     source $BASE_DIR/scripts/arch/install.arch.sh

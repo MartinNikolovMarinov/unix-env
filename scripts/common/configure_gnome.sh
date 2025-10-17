@@ -1,5 +1,7 @@
 #!/bin/bash
 
+log_info "Configuring Gnome"
+
 # Modify the settings for Alt+Tab behavior:
 gsettings set org.gnome.desktop.wm.keybindings switch-applications "[]"
 gsettings set org.gnome.desktop.wm.keybindings switch-applications-backward "[]"

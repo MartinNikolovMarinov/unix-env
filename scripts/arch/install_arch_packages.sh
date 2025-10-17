@@ -16,6 +16,11 @@ function install_arch_pkg() {
 sudo pacman -Syu
 sudo pacman -S dialog # Will need this for the next step
 
+if ! prompt_user_confirm_dialog "Continue with Pacman installation"; then
+    # Option to exit early if packages are already installed
+    return 0
+fi
+
 # Install packages
 available_packages=(
     "wl-clipboard"

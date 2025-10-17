@@ -16,15 +16,15 @@ cp           -rf $BASE_DIR/submodules/zsh-syntax-highlighting $OUTPUT_DIRECTORY/
 
 case $SELECTED_DESKTOP_ENVIRONMENT in
     0)
-        echo Copy the sway specific configurations
+        echo Copy the SWAY specific configurations
         sync_fs_tree     $BASE_DIR/fs/arch-sway/.config    "$OUTPUT_DIRECTORY/.config"
         ;;
     1)
-        echo TODO: Copy the kde specific configurations
+        echo TODO: Copy the KDE specific configurations
         echo "exec startplasma-wayland" >> $OUTPUT_DIRECTORY/.xinitrc
         ;;
     2)
-        echo Copy the sway specific configurations
+        echo Copy the GNOME specific configurations
         sync_fs_tree     $BASE_DIR/fs/arch-gnome/.config    "$OUTPUT_DIRECTORY/.config"
         ;;
 esac

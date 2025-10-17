@@ -1,6 +1,8 @@
 #!/bin/bash
 
+set +e +u +o pipefail # Some of the commands in install packages are allowed to fail:
 source $BASE_DIR/scripts/arch/install_arch_packages.sh
+set -euo pipefail
 
 # Install Desktop envoronment
 available_desktop_environments=(

@@ -13,12 +13,18 @@ function install_apt_pkg() {
     return 0
 }
 
-sudo update
+sudo apt-get update
 sudo apt-get install dialog # Will need this for the next step
+
+if ! prompt_user_confirm_dialog "Continue with APT installation"; then
+    # Option to exit early if packages are already installed
+    return 0
+fi
 
 available_packages=(
     "net-tools"                     # needed for ifconfig
     "tree"
+    "which"
     "htop"
     "zsh"
     "kitty"
@@ -33,6 +39,7 @@ available_packages=(
     "fd-find"
     "bat"
     "micro"
+    "vim"
     "fzf"
     "xdg-utils"
 
@@ -66,15 +73,4 @@ if [[ $resp_code != 0 ]]; then
     sudo add-apt-repository universe
     sudo apt update
     sudo apt-get install fonts-firacode
-fi
-
-# Install sublime-test
-dpkg-query -l sublime-text > /dev/null
-resp_code=$(echo $?)
-if [[ $resp_code != 0 ]]; then
-    log_info "Install sublime text"
-    wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-    echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-    sudo apt-get update
-    install_apt_pkg sublime-text
 fi
