@@ -15,7 +15,6 @@ alias ll="ls -s -h"
 alias la="ls -la"
 alias grep="grep --color=auto"
 alias subl="setsid sublime_text"
-alias bat="batcat --style=numbers --color=always --line-range :500"
 alias neofetch="fastfetch"
 
 alias strip_ansi="sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'"
