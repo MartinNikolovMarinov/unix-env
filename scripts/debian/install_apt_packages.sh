@@ -55,15 +55,11 @@ selected_packages=()
 prompt_user_for_packages_dialog "Select packages to install:" available_packages selected_packages
 log_info "Selected packages: ${selected_packages[@]}"
 
-# Install APT packages
-if prompt_user_confirm_dialog "Install packages one-by-one?"; then
-    for pkg in "${selected_packages[@]}"
-    do
-        install_apt_pkg $pkg
-    done
-else
-    sudo apt-get install "${selected_packages[@]}" || echo "Error: Installation failed for some packages" >&2
-fi
+# Install packages one-by-one to pay close attention to what fails.
+for pkg in "${selected_packages[@]}"
+do
+    install_apt_pkg $pkg
+done
 
 # Install Fira-Code fonts
 dpkg-query -l fonts-firacode > /dev/null
