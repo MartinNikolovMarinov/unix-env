@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 export OUTPUT_DIRECTORY=$HOME
 export BASE_DIR=$(echo "$PWD")
 source $BASE_DIR/scripts/common/utils.sh
