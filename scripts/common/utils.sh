@@ -1,5 +1,7 @@
 #!/bin/bash
 
+############################## Logging ##############################
+
 function log_err() {
     if [[ -n $1 ]]; then
         echo
@@ -16,40 +18,34 @@ function log_info() {
     fi
 }
 
-function write_or_append_to_file() {
-    local file="$1"
-    local content="$2"
+############################## File System Operations ##############################
 
-    if [[ -e "$file" ]]; then
-        echo "$content" >> "$file"  # Append if file exists
-    else
-        echo "$content" > "$file"   # Write if file does not exist
-    fi
-}
-
-function sync_fs_tree() {
+sync_fs_tree() {
     local src_dir="$1"
     local dest_dir="$2"
 
     if [[ ! -d "$src_dir" ]]; then
-        echo "Error: $src_dir is not a valid directory."
+        echo "Error: $src_dir is not a valid directory." >&2
         return 1
     fi
 
-    # Ensure the destination directory exists
     mkdir -p "$dest_dir"
 
-    find "$src_dir" -print0 | while IFS= read -r -d '' item; do
-        local dest_item="$dest_dir/$item"
-        if [[ -d "$item" ]]; then
-            echo "Creating Directory: $item -> $dest_item"
-            mkdir -p "$dest_item"
-        elif [[ -f "$item" ]]; then
-            echo "Syncing File: $item -> $dest_item"
-            write_or_append_to_file "$dest_item" "$(cat $item)"
-        fi
+    find "$src_dir" -type d -print0 | while IFS= read -r -d '' dir; do
+        local rel="${dir#$src_dir/}"
+        echo "Creating Directory: $dest_dir/$rel"
+        mkdir -p "$dest_dir/$rel"
+    done
+
+    find "$src_dir" -type f -print0 | while IFS= read -r -d '' file; do
+        local rel="${file#$src_dir/}"
+        echo "Syncing File: $file -> $dest_dir/$rel"
+        local file_content="$(cat "$file")"
+        echo -e "\n$file_content" >>"$dest_dir/$rel"
     done
 }
+
+############################## Read Based Prompts ##############################
 
 function prompt_user_to_continue() {
     while true; do
@@ -60,27 +56,6 @@ function prompt_user_to_continue() {
         esac
     done
 }
-
-function prompt_user_confirm() {
-    dialog --title "Confirmation" --yesno "$1" 7 40
-    response=$?
-
-    clear
-
-    case $response in
-        0)
-            return 0  # Yes
-            ;;
-        1)
-            return 1  # No
-            ;;
-        *)
-            return 2  # Cancel/Close
-            ;;
-    esac
-}
-
-############################## Dialog Widgets ##############################
 
 function prompt_user_choice() {
     local choice
@@ -108,7 +83,28 @@ function prompt_user_choice() {
     done
 }
 
-function prompt_user_for_packages() {
+############################## Dialog Widgets ##############################
+
+function prompt_user_confirm_dialog() {
+    dialog --title "Confirmation" --yesno "$1" 7 40
+    response=$?
+
+    clear
+
+    case $response in
+        0)
+            return 0  # Yes
+            ;;
+        1)
+            return 1  # No
+            ;;
+        *)
+            return 2  # Cancel/Close
+            ;;
+    esac
+}
+
+function prompt_user_for_packages_dialog() {
     local title="$1"
     local -n packages="$2"  # Use nameref to reference the passed array
     local -n selected="$3"  # Use nameref for the out parameter
@@ -149,7 +145,7 @@ function prompt_user_for_packages() {
     return 0
 }
 
-function  prompt_user_radio_select() {
+function prompt_user_radio_select_dialog() {
     local prompt="$1"                   # First argument: the prompt message
     local -n result_var=$2              # Second argument: variable to store the selected index (passed by name)
     local -n options=$3                 # Third argument: array of options (passed by name)

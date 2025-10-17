@@ -1,7 +1,6 @@
 # order matters !
 export ZSH_HOME=~/.config/zsh
 
-export PATH="$PATH:$(realpath ~)/.cargo/bin"
 export PATH="$PATH:$(realpath ~)/.fzf/bin"
 export PATH="$PATH:$(realpath ~)/.local/bin"
 export PATH="$PATH:$(realpath ~)/bin"
@@ -12,9 +11,12 @@ export PATH="$PATH:$(realpath ~)/bin"
 autoload -Uz compinit; compinit -i
 
 # load bash aliases :
-[ -f $ZSH_HOME/.zsh_aliases.sh ] && source $ZSH_HOME/.zsh_aliases.sh
+[ -f $ZSH_HOME/.zsh_aliases.zsh ] && source $ZSH_HOME/.zsh_aliases.zsh
 # load bash functions :
-[ -f $ZSH_HOME/.zsh_functions.sh ] && . $ZSH_HOME/.zsh_functions.sh
+[ -f $ZSH_HOME/.zsh_functions.zsh ] && . $ZSH_HOME/.zsh_functions.zsh
+
+# Setup a script that runs every time on exit.
+trap "source \"$ZSH_HOME/.zshonexit.zsh\"" EXIT
 
 # Auto complete dot files:
 _comp_options+=(globdots) # With hidden files

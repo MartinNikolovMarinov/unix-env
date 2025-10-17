@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# load last directory location and cd into it :
+# load last directory location and store it in lastdir variable:
 [ -f ~/.config/zsh/.bash_lastdir ] && [ -e "$(cat ~/.config/zsh/.bash_lastdir)" ] && lastdir=$(cat ~/.config/zsh/.bash_lastdir)
 
 ## FUNCTIONS :
@@ -133,38 +133,6 @@ function generate_random_data() {
     fi
 }
 
-# Note management:
-function note_create() {
-    # command 1 search for all directories in ~/notes. If there are no directories print "",which is a hack to make the next command work.
-    # command 2 add an option for new notes directory
-    # command 3 actual fzf command
-    local result=$(fd --type=directory . ~/notes | (grep . || echo "") | awk 'NR==1{print "new directory"}1' | fzf -m)
-
-    if [[ -z $result ]]; then
-        echo Canceled
-        return
-    fi
-
-    local note_dir=""
-    local note_name=""
-    local tmp=""
-
-    if [[ "$result" == "new directory" ]]; then
-        vared -p "Enter directory name: " -c tmp
-        note_dir=$(echo ~/notes/$tmp)
-        echo Creating directory: $note_dir
-        mkdir -p $note_dir
-    else
-        note_dir=$result
-    fi
-
-    tmp=""
-    vared -p "Enter note name: " -c tmp
-    note_name=$(echo $tmp)
-    echo Creating note file: $note_dir/$note_name
-    micro $note_dir/$note_name
-}
-
 # Clean zsh history file
 function clean_history () {
     local tmp_hist_file=$(printf "$HISTFILE"_tmp)
@@ -181,6 +149,72 @@ function repeat_if_no_error() {
             return 1
         fi
     done
+}
+
+function codec_detect() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: detect_codec <input_file>"
+        return 1
+    fi
+
+    local input="$1"
+
+    if [[ ! -f "$input" ]]; then
+        echo "❌ Error: '$input' not found."
+        return 1
+    fi
+
+    local codec
+    codec=$(ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name \
+            -of default=noprint_wrappers=1:nokey=1 "$input")
+
+    if [[ -n "$codec" ]]; then
+        echo "Video codec for '$input': $codec"
+    else
+        echo "⚠️  No video stream detected in '$input'"
+    fi
+}
+
+function codec_convert_to_h264() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: convert_to_h264 <input_file> [crf (default 20)]"
+        return 1
+    fi
+
+    local input="$1"
+    local crf="${2:-20}"
+    local base="${input%.*}"
+    local output="${base}_h264.mp4"
+
+    if [[ ! -f "$input" ]]; then
+        echo "❌ Error: '$input' not found."
+        return 1
+    fi
+
+    # Detect codec
+    local codec
+    codec=$(ffprobe -v error -select_streams v:0 \
+            -show_entries stream=codec_name \
+            -of default=noprint_wrappers=1:nokey=1 "$input")
+
+    echo "Detected video codec: $codec"
+
+    # Skip if already H.264
+    if [[ "$codec" == "h264" ]]; then
+        echo "✅ '$input' is already H.264 — skipping conversion."
+        return 0
+    fi
+
+    echo "Converting '$input' → '$output' (CRF=$crf)..."
+    ffmpeg -i "$input" -map 0 -c:v libx264 -preset slow -crf "$crf" \
+           -c:a aac -b:a 192k -movflags +faststart -c:s copy "$output"
+
+    if [[ $? -eq 0 ]]; then
+        echo "✅ Conversion complete: $output"
+    else
+        echo "❌ Conversion failed for: $input"
+    fi
 }
 
 # FZF functionality

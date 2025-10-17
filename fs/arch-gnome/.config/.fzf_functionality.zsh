@@ -34,12 +34,12 @@ function qfzf_dirs() {
 	if [[ ("$1" == ".") && ("$2" == "-a") ]]; then
 		fd --no-ignore --hidden --type=directory | fzf -m
 		return
-	elif [[  "$1" == "." ]]; then
+	elif [[ "$1" == "." ]]; then
 		fd --type=directory | fzf -m
 		return
 	fi
 
-	fd --no-ignore --hidden --type=directory -E Library -E Pictures . ~ | fzf -m $@
+	fd --no-ignore --hidden --type=directory . ~ | fzf -m $@
 }
 
 function qcd() {
@@ -59,14 +59,14 @@ function qrealpath() {
 function qcat() {
 	local tmp=$(qfzf_files $@)
 	if [[ -n $tmp ]]; then
-		cat $(echo $tmp | tr '\n' ' ')
+		cat $tmp
 	fi
 }
 
 function qbat() {
 	local tmp=$(qfzf_files $@)
 	if [[ -n $tmp ]]; then
-		bat --paging=never $(echo $tmp | tr '\n' ' ')
+		bat --paging=never $tmp
 	fi
 }
 
@@ -105,17 +105,5 @@ function qnotes () {
 	local tmp=$(fd --type=file . ~/notes | fzf -m --keep-right --preview-window="wrap" --preview $preview)
 	if [[ -n $tmp ]]; then
 		cat $tmp
-	fi
-}
-
-function qssh() {
-	local host=$(cat ~/.ssh/known_hosts | awk '{print $1}' | tr "," " " | fzf | awk '{print $1}')
-	if [[ -z $host ]]; then
-		return
-	fi
-
-	echo ssh $host $@
-	if [[ "$host" != "" ]]; then
-		ssh $host $@
 	fi
 }

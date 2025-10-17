@@ -9,7 +9,7 @@ sed -n '/^[[:space:]]*HOOKS=/p' /etc/mkinitcpio.conf
 HOOKS=(base systemd autodetect modconf kms keyboard keymap block sd-encrypt resume filesystems fsck)
 ```
 
-Configure the Encrypted Swap next by editing the `/etc/crypttab` 
+Configure the Encrypted Swap next by editing the `/etc/crypttab`
 ```bash
 cat /etc/crypttab
 

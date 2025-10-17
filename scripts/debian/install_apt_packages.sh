@@ -41,13 +41,15 @@ available_packages=(
     "latexmk"
     "biber"
     "entr"
+    "fastfetch"
 )
 
 selected_packages=()
-prompt_user_for_packages "Select packages to install:" available_packages selected_packages
+prompt_user_for_packages_dialog "Select packages to install:" available_packages selected_packages
 log_info "Selected packages: ${selected_packages[@]}"
 
-if prompt_user_confirm "Install packages one-by-one?"; then
+# Install APT packages
+if prompt_user_confirm_dialog "Install packages one-by-one?"; then
     for pkg in "${selected_packages[@]}"
     do
         install_apt_pkg $pkg
@@ -56,6 +58,7 @@ else
     sudo apt-get install "${selected_packages[@]}" || echo "Error: Installation failed for some packages" >&2
 fi
 
+# Install Fira-Code fonts
 dpkg-query -l fonts-firacode > /dev/null
 resp_code=$(echo $?)
 if [[ $resp_code != 0 ]]; then
@@ -65,6 +68,7 @@ if [[ $resp_code != 0 ]]; then
     sudo apt-get install fonts-firacode
 fi
 
+# Install sublime-test
 dpkg-query -l sublime-text > /dev/null
 resp_code=$(echo $?)
 if [[ $resp_code != 0 ]]; then

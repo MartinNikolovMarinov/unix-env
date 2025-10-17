@@ -4,14 +4,14 @@ lsblk
 
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 loop0         7:0    0 946.7M  1 loop /run/archiso/airootfs
-sda           8:0    1  14.8G  0 disk 
-└─sda1        8:1    1  14.8G  0 part 
-nvme0n1     259:0    0 931.5G  0 disk  
-nvme1n1     259:4    0 476.9G  0 disk 
-├─nvme1n1p1 259:5    0   100M  0 part 
-├─nvme1n1p2 259:6    0    16M  0 part 
-├─nvme1n1p3 259:7    0 476.3G  0 part 
-└─nvme1n1p4 259:8    0   546M  0 part 
+sda           8:0    1  14.8G  0 disk
+└─sda1        8:1    1  14.8G  0 part
+nvme0n1     259:0    0 931.5G  0 disk
+nvme1n1     259:4    0 476.9G  0 disk
+├─nvme1n1p1 259:5    0   100M  0 part
+├─nvme1n1p2 259:6    0    16M  0 part
+├─nvme1n1p3 259:7    0 476.3G  0 part
+└─nvme1n1p4 259:8    0   546M  0 part
 ```
 
 In this case I will pick `nvme0n1` and I will partition the disk in the following way:
@@ -85,17 +85,17 @@ lsblk
 
 NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
 loop0         7:0    0 946.7M  1 loop  /run/archiso/airootfs
-sda           8:0    1  14.8G  0 disk  
-└─sda1        8:1    1  14.8G  0 part  
-nvme0n1     259:0    0 931.5G  0 disk  
+sda           8:0    1  14.8G  0 disk
+└─sda1        8:1    1  14.8G  0 part
+nvme0n1     259:0    0 931.5G  0 disk
 ├─nvme0n1p1 259:1    0   512M  0 part  /mnt/boot
-├─nvme0n1p2 259:2    0    16G  0 part  
+├─nvme0n1p2 259:2    0    16G  0 part
 │ └─swap    253:1    0    16G  0 crypt [SWAP]
-└─nvme0n1p3 259:3    0   915G  0 part  
+└─nvme0n1p3 259:3    0   915G  0 part
   └─root    253:0    0   915G  0 crypt /mnt
-nvme1n1     259:4    0 476.9G  0 disk  
+nvme1n1     259:4    0 476.9G  0 disk
 ├─nvme1n1p1 259:5    0   100M  0 part  /mnt/boot/efi-windows
-├─nvme1n1p2 259:6    0    16M  0 part  
-├─nvme1n1p3 259:7    0 476.3G  0 part  
-└─nvme1n1p4 259:8    0   546M  0 part  
+├─nvme1n1p2 259:6    0    16M  0 part
+├─nvme1n1p3 259:7    0 476.3G  0 part
+└─nvme1n1p4 259:8    0   546M  0 part
 ```

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-prompt_user_to_continue "Start setting up Environment"
-
 [ -z "${OUTPUT_DIRECTORY}" ] && { log_err "OUTPUT_DIRECTORY not set, environment setup failed"; exit 1; }
 
 mkdir -p $OUTPUT_DIRECTORY
@@ -12,13 +10,24 @@ mkdir -p $OUTPUT_DIRECTORY/.config/zsh/plugins
 cp       $BASE_DIR/fs/common/.gitconfig $OUTPUT_DIRECTORY/.gitconfig
 cp       $BASE_DIR/fs/common/.zshenv    $OUTPUT_DIRECTORY/.zshenv
 
-# Sync .config
+# Sync common .config
 sync_fs_tree     $BASE_DIR/fs/common/.config                  "$OUTPUT_DIRECTORY/.config"
 cp           -rf $BASE_DIR/submodules/zsh-syntax-highlighting $OUTPUT_DIRECTORY/.config/zsh/plugins
-sync_fs_tree     $BASE_DIR/fs/debian/.config                  "$OUTPUT_DIRECTORY/.config"
 
-log_info "Setting kitty as default terminal emulator"
-sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty
+case $SELECTED_DESKTOP_ENVIRONMENT in
+    0)
+        echo Copy the sway specific configurations
+        sync_fs_tree     $BASE_DIR/fs/arch-sway/.config    "$OUTPUT_DIRECTORY/.config"
+        ;;
+    1)
+        echo TODO: Copy the kde specific configurations
+        echo "exec startplasma-wayland" >> $OUTPUT_DIRECTORY/.xinitrc
+        ;;
+    2)
+        echo Copy the sway specific configurations
+        sync_fs_tree     $BASE_DIR/fs/arch-gnome/.config    "$OUTPUT_DIRECTORY/.config"
+        ;;
+esac
 
 log_info "Setting zsh as default shell"
 chsh -s $(which zsh)

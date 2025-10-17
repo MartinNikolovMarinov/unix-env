@@ -1,0 +1,43 @@
+{
+    "modules": [
+        "os",
+        "kernel",
+        "uptime",
+        "initsystem",
+        "shell",
+        "packages",
+        "bios",
+        "bootmgr",
+        "board",
+
+        "separator",
+
+        "cpu",
+        "cpucache",
+        "cpuusage",
+        "memory",
+
+        "separator",
+
+        "disk",
+        "diskio",
+        "physicaldisk",
+        "swap",
+
+        "separator",
+
+        "monitor",
+        "gpu",
+        "vulkan",
+        "wm",
+        "de",
+        "keyboard",
+        "sound",
+
+        "separator",
+
+        "dns",
+        "localip",
+        "publicip"
+    ]
+}
